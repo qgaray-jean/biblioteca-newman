@@ -1,42 +1,79 @@
-import { useParams, Link } from "react-router-dom";
-import { EmptyState } from "../components/EmptyState";
+import React, { useState, useEffect } from 'react';
+import { useApp } from '../context/AppContext';
+import { BOOKS_DB } from '../data/books';
+import { StarRating } from '../components/StarRating';
+import { RentalModal } from '../components/RentalModal';
 
-export function BookDetailPage({ books, onRentClick }) {
-    const { id } = useParams();
-    const book = books.find((b) => b.id === id);
+export function BookDetailPage() {
+  const { page, setPage, rentals, rent, addToast } = useApp();
+  const book = BOOKS_DB.find(b => b.id === page.bookId);
+  const [modal, setModal] = useState(false);
 
-    if (!book) return <EmptyState title="Libro no encontrado" text="Revisa el catálogo." />;
+  useEffect(() => { try { window.scrollTo(0,0); } catch {} }, [page.bookId]);
 
-    return (
-        <div>
-            <Link to="/catalog" className="text-gray-700">← Volver al catálogo</Link>
+  if (!book) return (
+    <div className="container page" style={{ padding:"4rem 1.5rem", textAlign:"center" }}>
+      <div style={{ fontSize:"2.5rem", marginBottom:"0.75rem" }}>😕</div>
+      <h2 className="section-title">Libro no encontrado</h2>
+      <button className="btn btn--primary" style={{ marginTop:"1.25rem" }} onClick={() => setPage({ name:"catalog" })}>Volver al catálogo</button>
+    </div>
+  );
 
-            <div className="card mt-3">
-                <div className="flex gap-3.5 flex-wrap">
-                    <img
-                        src={book.coverUrl}
-                        alt={book.title}
-                        className="w-56 h-72 object-cover rounded-xl border border-gray-200"
-                    />
-                    <div className="flex-1 min-w-[260px]">
-                        <h2 className="m-0 mb-2">{book.title}</h2>
-                        <div className="text-gray-600">
-                            <div><b>Autor:</b> {book.author}</div>
-                            <div><b>Año:</b> {book.year}</div>
-                            <div><b>Categoría:</b> {book.category}</div>
-                            <div><b>Idioma:</b> {book.language}</div>
-                            <div><b>ISBN10:</b> {book.isbn10}</div>
-                            <div><b>ISBN13:</b> {book.isbn13}</div>
-                        </div>
+  const alreadyRented = rentals.some(r => r.bookId === book.id && r.status === "active");
 
-                        <p className="mt-3 text-gray-700">{book.synopsis}</p>
+  const handleConfirm = data => {
+    rent(data);
+    setModal(false);
+    addToast(`"${data.book.title}" alquilado con éxito`, "success");
+  };
 
-                        <button className="btn btn--primary mt-4" onClick={() => onRentClick(book.id)}>
-                            Alquilar libro
-                        </button>
-                    </div>
-                </div>
+  return (
+    <div className="book-detail page">
+      <div className="container">
+        <button className="book-detail__back" onClick={() => setPage({ name:"catalog" })}>← Volver al catálogo</button>
+        <div className="book-detail__layout">
+          <div>
+            <div className="book-detail__cover-wrap">
+              <img src={book.cover} alt={book.title}
+                onError={e => { e.target.src=`https://placehold.co/240x360/1a1209/f5c842?text=${encodeURIComponent(book.title.slice(0,10))}`; }} />
             </div>
+          </div>
+          <div>
+            <h1 className="book-detail__title">{book.title}</h1>
+            <p className="book-detail__author">{book.author}</p>
+            <div className="book-detail__tags">
+              <span className="tag tag--accent">{book.category}</span>
+              <span className="tag">{book.language}</span>
+              <span className="tag">{book.year}</span>
+              <span className="tag">{book.pages} págs.</span>
+            </div>
+            <StarRating rating={book.rating} />
+            <p className="book-detail__synopsis" style={{ marginTop:"1rem" }}>{book.synopsis}</p>
+            <div className="book-detail__isbn">
+              <div><div className="isbn__label">ISBN-10</div><div className="isbn__value">{book.isbn10}</div></div>
+              <div><div className="isbn__label">ISBN-13</div><div className="isbn__value">{book.isbn13}</div></div>
+            </div>
+            <div className="book-detail__avail">
+              <div className={`avail-dot avail-dot--${book.available?"yes":"no"}`} />
+              <span style={{ fontSize:"0.9rem", fontWeight:500 }}>{book.available?`Disponible (${book.stock} copias)`:"No disponible"}</span>
+            </div>
+            {alreadyRented
+              ? <button className="notice-banner" onClick={() => setPage({ name:"rentals" })}>✓ Ya tienes este libro alquilado — Ver mis alquileres →</button>
+              : <button className="btn btn--primary" disabled={!book.available} onClick={() => setModal(true)}>{book.available?"📖 Alquilar este libro":"No disponible"}</button>
+            }
+            <div className="reviews">
+              <h3 className="reviews__title">Reseñas ({book.reviews.length})</h3>
+              {book.reviews.map((r,i) => (
+                <div key={i} className="review-card">
+                  <div className="review-card__header"><span className="review-card__user">{r.user}</span><span className="review-card__stars">{"★".repeat(r.stars)}</span></div>
+                  <p className="review-card__comment">"{r.comment}"</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-    );
+      </div>
+      {modal && <RentalModal book={book} onClose={() => setModal(false)} onConfirm={handleConfirm} />}
+    </div>
+  );
 }

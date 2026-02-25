@@ -1,11 +1,9 @@
+import React from 'react';
+
 export function Footer() {
-    return (
-        <footer className="footer">
-            <div className="container">
-                <div className="footer__text">
-                    Biblioteca Newman — React + Router v6 + Mock Data
-                </div>
-            </div>
-        </footer>
-    );
+  return (
+    <footer className="footer">
+      <p>© 2025 <span>Biblioteca Online</span> — Construida con React, CSS3 y ♥</p>
+    </footer>
+  );
 }
