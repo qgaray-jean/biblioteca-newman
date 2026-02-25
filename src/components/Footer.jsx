@@ -3,7 +3,7 @@ export function Footer() {
         <footer className="footer">
             <div className="container">
                 <div className="footer__text">
-                    Biblioteca Online — React + Router v6 + Mock Data
+                    Biblioteca Newman — React + Router v6 + Mock Data
                 </div>
             </div>
         </footer>

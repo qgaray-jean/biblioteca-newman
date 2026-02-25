@@ -9,18 +9,18 @@ export function BookDetailPage({ books, onRentClick }) {
 
     return (
         <div>
-            <Link to="/catalog" style={{ color: "#444" }}>← Volver al catálogo</Link>
+            <Link to="/catalog" className="text-gray-700">← Volver al catálogo</Link>
 
-            <div className="card" style={{ marginTop: 12 }}>
-                <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <div className="card mt-3">
+                <div className="flex gap-3.5 flex-wrap">
                     <img
                         src={book.coverUrl}
                         alt={book.title}
-                        style={{ width: 220, height: 300, objectFit: "cover", borderRadius: 14, border: "1px solid #eee" }}
+                        className="w-56 h-72 object-cover rounded-xl border border-gray-200"
                     />
-                    <div style={{ flex: 1, minWidth: 260 }}>
-                        <h2 style={{ margin: "0 0 8px" }}>{book.title}</h2>
-                        <div style={{ color: "#555" }}>
+                    <div className="flex-1 min-w-[260px]">
+                        <h2 className="m-0 mb-2">{book.title}</h2>
+                        <div className="text-gray-600">
                             <div><b>Autor:</b> {book.author}</div>
                             <div><b>Año:</b> {book.year}</div>
                             <div><b>Categoría:</b> {book.category}</div>
@@ -29,9 +29,9 @@ export function BookDetailPage({ books, onRentClick }) {
                             <div><b>ISBN13:</b> {book.isbn13}</div>
                         </div>
 
-                        <p style={{ marginTop: 12, color: "#444" }}>{book.synopsis}</p>
+                        <p className="mt-3 text-gray-700">{book.synopsis}</p>
 
-                        <button className="btn btn--primary" onClick={() => onRentClick(book.id)}>
+                        <button className="btn btn--primary mt-4" onClick={() => onRentClick(book.id)}>
                             Alquilar libro
                         </button>
                     </div>

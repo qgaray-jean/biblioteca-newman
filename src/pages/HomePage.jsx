@@ -6,15 +6,17 @@ export function HomePage({ books }) {
 
     return (
         <div>
-            <div className="card" style={{ marginBottom: 14 }}>
-                <h2 style={{ margin: 0 }}>Bienvenido a la Biblioteca</h2>
-                <p style={{ marginTop: 8, color: "#444" }}>
+            <div className="card mb-3.5">
+                <h2 className="m-0">Bienvenido a la Biblioteca</h2>
+                <p className="mt-2 text-gray-700">
                     Explora el catálogo, alquila libros y gestiona tus alquileres.
                 </p>
-                <Link className="book-card__btn" to="/catalog">Ir al Catálogo</Link>
+                <Link className="btn btn--primary mt-4" to="/catalog">
+                    Ir al Catálogo
+                </Link>
             </div>
 
-            <h3 style={{ margin: "10px 0" }}>Recomendados</h3>
+            <h3 className="my-2.5">Recomendados</h3>
             <BookGrid books={top} />
         </div>
     );

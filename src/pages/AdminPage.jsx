@@ -19,9 +19,9 @@ export function AdminPage({ onAddBook }) {
 
     return (
         <div>
-            <h2 style={{ margin: "0 0 10px" }}>Admin (Mock)</h2>
+            <h2 className="m-0 mb-2.5">Admin (Mock)</h2>
             <div className="card">
-                <form onSubmit={submit} style={{ display: "grid", gap: 10 }}>
+                <form onSubmit={submit} className="grid gap-2.5">
                     <input
                         className="search__input"
                         value={title}
@@ -39,7 +39,7 @@ export function AdminPage({ onAddBook }) {
                     </button>
                 </form>
             </div>
-            <p style={{ color: "#555", marginTop: 10 }}>
+            <p className="text-gray-600 mt-2.5">
                 Esto agrega un libro al estado en memoria (sin backend), tal como pide el mock.
             </p>
         </div>

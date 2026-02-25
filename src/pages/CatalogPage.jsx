@@ -4,19 +4,19 @@ import { BookGrid } from "../components/BookGrid";
 import { EmptyState } from "../components/EmptyState";
 
 export function CatalogPage({
-                                search,
-                                onSearchChange,
-                                category,
-                                language,
-                                onCategoryChange,
-                                onLanguageChange,
-                                categories,
-                                languages,
-                                filteredBooks,
-                            }) {
+    search,
+    onSearchChange,
+    category,
+    language,
+    onCategoryChange,
+    onLanguageChange,
+    categories,
+    languages,
+    filteredBooks,
+}) {
     return (
         <div>
-            <h2 style={{ margin: "0 0 8px" }}>Catálogo</h2>
+            <h2 className="m-0 mb-2">Catálogo</h2>
 
             <SearchBar value={search} onChange={onSearchChange} />
 

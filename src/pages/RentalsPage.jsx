@@ -13,9 +13,9 @@ export function RentalsPage({ rentals, books, onExtendRental }) {
 
     return (
         <div>
-            <h2 style={{ margin: "0 0 10px" }}>Mis alquileres</h2>
+            <h2 className="m-0 mb-2.5">Mis alquileres</h2>
 
-            <div style={{ display: "grid", gap: 12 }}>
+            <div className="grid gap-3">
                 {rentals.map((r) => {
                     const book = books.find((b) => b.id === r.bookId);
                     return (
