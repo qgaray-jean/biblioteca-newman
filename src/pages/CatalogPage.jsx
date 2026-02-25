@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
 import { useSearch } from '../hooks/useSearch';
 import { BOOKS_DB } from '../data/books';
 import { BookCard } from '../components/BookCard';
 import { RentalModal } from '../components/RentalModal';
 
-export function CatalogPage() {
-  const { rent, addToast } = useApp();
+export function CatalogPage({ rent, addToast }) {
   const { query, setQuery, category, setCategory, results } = useSearch(BOOKS_DB);
   const [modalBook, setModalBook] = useState(null);
   const cats = ["all", ...new Set(BOOKS_DB.map(b => b.category))];

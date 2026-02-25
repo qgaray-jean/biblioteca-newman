@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
 import { ExtendModal } from '../components/ExtendModal';
 
-export function RentalsPage() {
-  const { rentals, extend, returnBook, addToast } = useApp();
+export function RentalsPage({ rentals, extend, returnBook, addToast }) {
   const [extTarget, setExtTarget] = useState(null);
   const [filter, setFilter] = useState("all");
 

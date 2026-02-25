@@ -1,26 +1,28 @@
 import React from 'react';
-import { useApp } from '../context/AppContext';
+import { NavLink } from 'react-router-dom';
 
 export function Navbar() {
-  const { page, setPage } = useApp();
   const links = [
-    { id:"catalog", label:"Catálogo" },
-    { id:"rentals", label:"Mis Alquileres" },
-    { id:"about",   label:"Acerca de" },
-    { id:"admin",   label:"Admin" },
+    { to: "/", label: "Catálogo" },
+    { to: "/rentals", label: "Mis Alquileres" },
+    { to: "/about", label: "Acerca de" },
+    { to: "/admin", label: "Admin" },
   ];
+
   return (
     <nav className="navbar">
-      <button className="navbar__brand" onClick={() => setPage({ name:"catalog" })}>
+      <NavLink className="navbar__brand" to="/">
         📖 <span>Biblioteca</span> Newman
-      </button>
+      </NavLink>
       <ul className="navbar__links">
         {links.map(l => (
-          <li key={l.id}>
-            <button
-              className={`navbar__link${page.name === l.id ? " navbar__link--active" : ""}`}
-              onClick={() => setPage({ name: l.id })}
-            >{l.label}</button>
+          <li key={l.to}>
+            <NavLink
+              to={l.to}
+              className={({ isActive }) => `navbar__link${isActive ? " navbar__link--active" : ""}`}
+            >
+              {l.label}
+            </NavLink>
           </li>
         ))}
       </ul>

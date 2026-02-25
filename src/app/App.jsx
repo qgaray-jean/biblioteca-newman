@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { AppContext } from '../context/AppContext';
+import { Routes, Route } from "react-router-dom";
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
@@ -12,7 +12,6 @@ import { AdminPage } from '../pages/AdminPage';
 import '../styles/App.css';
 
 export default function App() {
-  const [page, setPage] = useState({ name: "catalog" });
   const [rentals, setRentals] = useLocalStorage("bib_rentals_v3", []);
   const [toasts, setToasts] = useState([]);
 
@@ -54,27 +53,20 @@ export default function App() {
     setRentals(p => p.map(r => r.id === id ? { ...r, status: "returned" } : r));
   }, [setRentals]);
 
-  const ctx = { page, setPage, rentals, rent, extend, returnBook, addToast };
-
-  const renderPage = () => {
-    switch (page.name) {
-      case "catalog": return <CatalogPage />;
-      case "detail": return <BookDetailPage />;
-      case "rentals": return <RentalsPage />;
-      case "about": return <AboutPage />;
-      case "admin": return <AdminPage />;
-      default: return <CatalogPage />;
-    }
-  };
-
   return (
-    <AppContext.Provider value={ctx}>
-      <div className="app-root">
-        <Navbar />
-        <main>{renderPage()}</main>
-        <Footer />
-        <Toast toasts={toasts} remove={removeToast} />
-      </div>
-    </AppContext.Provider>
+    <div className="app-root">
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/" element={<CatalogPage rent={rent} addToast={addToast} />} />
+          <Route path="/book/:bookId" element={<BookDetailPage rentals={rentals} rent={rent} addToast={addToast} />} />
+          <Route path="/rentals" element={<RentalsPage rentals={rentals} extend={extend} returnBook={returnBook} addToast={addToast} />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/admin" element={<AdminPage rentals={rentals} />} />
+        </Routes>
+      </main>
+      <Footer />
+      <Toast toasts={toasts} remove={removeToast} />
+    </div>
   );
 }

@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useApp } from '../context/AppContext';
+import { useParams, useNavigate } from 'react-router-dom';
 import { BOOKS_DB } from '../data/books';
 import { StarRating } from '../components/StarRating';
 import { RentalModal } from '../components/RentalModal';
 
-export function BookDetailPage() {
-  const { page, setPage, rentals, rent, addToast } = useApp();
-  const book = BOOKS_DB.find(b => b.id === page.bookId);
+export function BookDetailPage({ rentals, rent, addToast }) {
+  const { bookId } = useParams();
+  const navigate = useNavigate();
+  const book = BOOKS_DB.find(b => b.id === Number(bookId));
   const [modal, setModal] = useState(false);
 
-  useEffect(() => { try { window.scrollTo(0,0); } catch {} }, [page.bookId]);
+  useEffect(() => { try { window.scrollTo(0,0); } catch {} }, [bookId]);
 
   if (!book) return (
     <div className="container page" style={{ padding:"4rem 1.5rem", textAlign:"center" }}>
       <div style={{ fontSize:"2.5rem", marginBottom:"0.75rem" }}>😕</div>
       <h2 className="section-title">Libro no encontrado</h2>
-      <button className="btn btn--primary" style={{ marginTop:"1.25rem" }} onClick={() => setPage({ name:"catalog" })}>Volver al catálogo</button>
+      <button className="btn btn--primary" style={{ marginTop:"1.25rem" }} onClick={() => navigate('/')}>Volver al catálogo</button>
     </div>
   );
 
@@ -30,7 +31,7 @@ export function BookDetailPage() {
   return (
     <div className="book-detail page">
       <div className="container">
-        <button className="book-detail__back" onClick={() => setPage({ name:"catalog" })}>← Volver al catálogo</button>
+        <button className="book-detail__back" onClick={() => navigate('/')}>← Volver al catálogo</button>
         <div className="book-detail__layout">
           <div>
             <div className="book-detail__cover-wrap">
@@ -58,7 +59,7 @@ export function BookDetailPage() {
               <span style={{ fontSize:"0.9rem", fontWeight:500 }}>{book.available?`Disponible (${book.stock} copias)`:"No disponible"}</span>
             </div>
             {alreadyRented
-              ? <button className="notice-banner" onClick={() => setPage({ name:"rentals" })}>✓ Ya tienes este libro alquilado — Ver mis alquileres →</button>
+              ? <button className="notice-banner" onClick={() => navigate('/rentals')}>✓ Ya tienes este libro alquilado — Ver mis alquileres →</button>
               : <button className="btn btn--primary" disabled={!book.available} onClick={() => setModal(true)}>{book.available?"📖 Alquilar este libro":"No disponible"}</button>
             }
             <div className="reviews">

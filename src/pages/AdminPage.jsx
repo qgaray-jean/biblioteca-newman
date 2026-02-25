@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
 import { BOOKS_DB } from '../data/books';
 
-export function AdminPage() {
-  const { rentals } = useApp();
+export function AdminPage({ rentals }) {
   const [search, setSearch] = useState("");
   const filtered = BOOKS_DB.filter(b =>
     b.title.toLowerCase().includes(search.toLowerCase()) ||

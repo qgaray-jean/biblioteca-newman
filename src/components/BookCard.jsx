@@ -1,11 +1,11 @@
 import React from 'react';
-import { useApp } from '../context/AppContext';
+import { useNavigate } from 'react-router-dom';
 import { StarRating } from './StarRating';
 
 export function BookCard({ book, delay=0 }) {
-  const { setPage } = useApp();
+  const navigate = useNavigate();
   return (
-    <div className="book-card" style={{ animationDelay:`${delay}ms` }} onClick={() => setPage({ name:"detail", bookId:book.id })}>
+    <div className="book-card" style={{ animationDelay:`${delay}ms` }} onClick={() => navigate(`/book/${book.id}`)}>
       <div className="book-card__cover-wrap">
         <img className="book-card__cover" src={book.cover} alt={book.title}
           onError={e => { e.target.src=`https://placehold.co/200x300/1a1209/f5c842?text=${encodeURIComponent(book.title.slice(0,10))}`; }} />
